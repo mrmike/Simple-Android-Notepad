@@ -154,7 +154,7 @@ public class Simple_NotepadActivity extends Activity implements
 			// we send boolean to CreateNote activity
 			// thanks to this boolean activity knows that user want to edit
 			// notes
-			i.putExtra("isEditable", true);
+			i.putExtra("isEdit", true);
 			startActivity(i);
 			break;
 

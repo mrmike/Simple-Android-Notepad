@@ -7,6 +7,8 @@
     <string name="addNoteButton">New note</string>
     <string name="mainHeader">My notes</string>
     <string name="CtxMenuHeader">Choose action</string>
+    <string name="updateNoteButton">Update note</string>
+    <string name="validation">Please fill the title and/or content field</string>
     
     <!-- createview layout -->
     <string name="noteTitle">Note\'s title</string>
