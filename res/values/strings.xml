@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, Simple_NotepadActivity!</string>
+    <string name="app_name">Simple_Notepad</string>
+    <string name="oneNote">NoteView</string>
+    <string name="addNoteButton">New note</string>
+    <string name="mainHeader">My notes</string>
+    <string name="CtxMenuHeader">Choose action</string>
+    
+    <!-- createview layout -->
+    <string name="noteTitle">Note\'s title</string>
+    <string name="noteContent">Note\'s content</string>
+    <string name="saveNoteButton">Save note</string>
+    
+        
+    <!-- context menu options -->
+    <string name="showNote">Pokaż notatke</string>
+    <string name="editNote">Edytuj notatke</string>
+    <string name="removeNote">Usuń notatke</string>
+
+</resources>
