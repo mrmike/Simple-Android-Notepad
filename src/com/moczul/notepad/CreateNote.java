@@ -1,5 +1,10 @@
 package com.moczul.notepad;
 
+/**
+ * @author Michał Moczulski
+ * twitter_url: http://twitter.com/#!/moczul
+ */
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;

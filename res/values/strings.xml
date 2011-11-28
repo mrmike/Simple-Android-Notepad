@@ -17,8 +17,8 @@
     
         
     <!-- context menu options -->
-    <string name="showNote">Pokaż notatke</string>
-    <string name="editNote">Edytuj notatke</string>
-    <string name="removeNote">Usuń notatke</string>
+    <string name="showNote">Show note</string>
+    <string name="editNote">Edit note</string>
+    <string name="removeNote">Remove note</string>
 
 </resources>

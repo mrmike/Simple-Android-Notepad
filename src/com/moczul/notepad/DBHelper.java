@@ -1,5 +1,10 @@
 package com.moczul.notepad;
 
+/**
+ * @author Michał Moczulski
+ * twitter_url: http://twitter.com/#!/moczul
+ */
+
 import java.util.Date;
 
 import android.content.ContentValues;
@@ -21,8 +26,9 @@ public class DBHelper extends SQLiteOpenHelper {
 	//column names
 	private static final String KEY_TITLE = "noteTitle";
 	private static final String KEY_CONTENT = "noteContent";
+	private static final String KEY_DATE = "date";
 	//sql query to creating table in database
-	private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "+KEY_TITLE+" TEXT NOT NULL, "+KEY_CONTENT+" TEXT NOT NULL, date TEXT);";
+	private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "+KEY_TITLE+" TEXT NOT NULL, "+KEY_CONTENT+" TEXT NOT NULL, "+KEY_DATE+" TEXT);";
 	
 	//contructor of DBHelper
 	public DBHelper(Context context) {
@@ -82,7 +88,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 	
 	public Cursor getNote(SQLiteDatabase db, String title) {
-		Cursor c = db.query(TABLE_NAME, new String[] {KEY_TITLE, KEY_CONTENT}, KEY_TITLE +" LIKE '"+ title +"'", null, null, null, null);
+		Cursor c = db.query(TABLE_NAME, new String[] {KEY_TITLE, KEY_CONTENT, KEY_DATE}, KEY_TITLE +" LIKE '"+ title +"'", null, null, null, null);
 		c.moveToFirst();
 		return c;
 	}

@@ -1,5 +1,10 @@
 package com.moczul.notepad;
 
+/**
+ * @author Michał Moczulski
+ * twitter_url: http://twitter.com/#!/moczul
+ */
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,6 +19,7 @@ public class OneNote extends Activity {
 	
 	//our views for display note title and content
 	private TextView noteTitle;
+	private TextView createdAt;
 	private TextView noteContent;
 	
 	//dbhelper
@@ -23,6 +29,7 @@ public class OneNote extends Activity {
 	//default values for title and content variables
 	private String title = "defaultTitle";
 	private String content = "defaultContent";
+	private String date = "date";
 
 	
 	@Override
@@ -37,6 +44,7 @@ public class OneNote extends Activity {
 		
 		noteTitle = (TextView) findViewById(R.id.noteTitle);
 		noteContent = (TextView) findViewById(R.id.noteContent);
+		createdAt = (TextView) findViewById(R.id.createdAt);
 		
 		// getting intent
 		Intent mIntent = getIntent();
@@ -53,12 +61,14 @@ public class OneNote extends Activity {
 		db.close();
 		
 		//getting the content from cursor
-		//getString(1) because first column is noteTitle and second is noteContent
+		//getString(1) because first column is noteTitle and second is noteContent and the third column is date
 		content = c.getString(1).toString();
+		date = c.getString(2).toString();
 		
 		//setting notes to our views
 		noteTitle.setText(title);
 		noteContent.setText(content);
+		createdAt.setText(date);
 	}
 	
 
