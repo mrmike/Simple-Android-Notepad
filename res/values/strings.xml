@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, Simple_NotepadActivity!</string>
     <string name="app_name">Simple_Notepad</string>
     <string name="oneNote">NoteView</string>
     <string name="addNoteButton">New note</string>
@@ -20,5 +19,7 @@
     <string name="showNote">Show note</string>
     <string name="editNote">Edit note</string>
     <string name="removeNote">Remove note</string>
+    
+    <string name="titleHint">Enter title here</string>
 
 </resources>
