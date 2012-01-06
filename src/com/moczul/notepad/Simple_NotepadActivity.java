@@ -88,6 +88,10 @@ public class Simple_NotepadActivity extends Activity implements
 		// getting notes from db
 		// see dbhelper for more details
 		notes = dbhelper.getNotes(db);
+		
+		// this should fix the problem
+		// now the activity will be managing the cursor lifecycle
+		startManagingCursor(notes);
 
 		// closing database connection !important
 		// always close connection with database
