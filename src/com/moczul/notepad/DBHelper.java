@@ -22,6 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	//name of table
 	private static final String TABLE_NAME = "notes";
 	//column names
+	private static final String KEY_ID = "id";
 	private static final String KEY_TITLE = "noteTitle";
 	private static final String KEY_CONTENT = "noteContent";
 	private static final String KEY_DATE = "date";
@@ -85,15 +86,35 @@ public class DBHelper extends SQLiteOpenHelper {
 		return c;
 	}
 	
-	public Cursor getNote(SQLiteDatabase db, String title) {
-		Cursor c = db.query(TABLE_NAME, new String[] {KEY_TITLE, KEY_CONTENT, KEY_DATE}, KEY_TITLE +" LIKE '"+ title +"'", null, null, null, null);
+	public Cursor getNote(SQLiteDatabase db, String title, int exactId) {
+		Cursor temp = db.query(TABLE_NAME, new String[] {KEY_ID}, KEY_TITLE +" LIKE '"+ title +"'", null, null, null, null);
+		if (temp.moveToFirst()) {
+			for (int i = 0; i<exactId; i++) {
+				temp.moveToNext();
+			}
+		}
+		
+		int id = Integer.parseInt(temp.getString(0));
+		temp.close();
+		
+		Cursor c = db.query(TABLE_NAME, new String[] {KEY_TITLE, KEY_CONTENT, KEY_DATE}, KEY_ID +" LIKE '"+ id +"'", null, null, null, null);
 		c.moveToFirst();
 		return c;
 	}
 	
-	public void removeNote(String title) {
+	public void removeNote(String title, int exactTitleId) {
 		SQLiteDatabase db = getWritableDatabase();
-		db.delete(TABLE_NAME, KEY_TITLE+" like '"+ title + "'", null);
+		
+		Cursor c = db.query(TABLE_NAME, new String[] {KEY_ID}, KEY_TITLE +" LIKE '"+ title +"'", null, null, null, null);
+		if (c.moveToFirst()) {
+			for (int i = 0; i<exactTitleId; i++) {
+				c.moveToNext();
+			}
+		}
+		
+		int id = Integer.parseInt(c.getString(0));
+		
+		db.delete(TABLE_NAME, KEY_ID+" like '"+ id + "'", null);
 		db.close();
 	}
 	

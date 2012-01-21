@@ -43,8 +43,11 @@ public class Simple_NotepadActivity extends Activity implements
 	// database helper
 	private DBHelper dbhelper;
 
+	// items contain notes titles
+	private ArrayList<String> items;
+
 	// variable will contain the position of clicked item in listview
-	private int position;
+	private int position = 0;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -80,15 +83,15 @@ public class Simple_NotepadActivity extends Activity implements
 
 	//
 	public void setNotes() {
-		// items contain notes titles
-		ArrayList<String> items = new ArrayList<String>();
+		// init the items arrayList
+		items = new ArrayList<String>();
 
 		// getting readable database
 		SQLiteDatabase db = dbhelper.getReadableDatabase();
 		// getting notes from db
 		// see dbhelper for more details
 		notes = dbhelper.getNotes(db);
-		
+
 		// this should fix the problem
 		// now the activity will be managing the cursor lifecycle
 		startManagingCursor(notes);
@@ -145,6 +148,22 @@ public class Simple_NotepadActivity extends Activity implements
 		TextView tv = (TextView) noteList.getChildAt(position);
 		// getting the title of this textView
 		String title = tv.getText().toString();
+		int exactTitleId = 0;
+
+		ArrayList<String> sameTitles = new ArrayList<String>();
+
+		for (int i = 0; i < items.size(); i++) {
+			if (items.get(i).equals(title)) {
+				if (i == position) {
+					sameTitles.add("exactTitle");
+				} else {
+					sameTitles.add("title");
+				}
+			}
+		}
+		// variable exactTitleIt contains the exact id number of title in case when we're having few items with the same title
+		// so we need to know which item was clicked, eg. the first item with the same title, or the second and so on
+		exactTitleId = sameTitles.indexOf("exactTitle");
 
 		// performing one of actions, depending on user choice
 		switch (item.getItemId()) {
@@ -152,6 +171,7 @@ public class Simple_NotepadActivity extends Activity implements
 		case R.id.showNote:
 			Intent mIntent = new Intent(this, OneNote.class);
 			mIntent.putExtra("title", title);
+			mIntent.putExtra("exactId", exactTitleId);
 			startActivity(mIntent);
 			break;
 
@@ -169,7 +189,7 @@ public class Simple_NotepadActivity extends Activity implements
 
 		case R.id.removeNote:
 			// removing this notes
-			dbhelper.removeNote(title);
+			dbhelper.removeNote(title, exactTitleId);
 			// refreshing the listView
 			setNotes();
 			break;
@@ -188,7 +208,25 @@ public class Simple_NotepadActivity extends Activity implements
 		String title = tv.getText().toString();
 		Intent mIntent = new Intent(this, OneNote.class);
 		mIntent.putExtra("title", title);
+		Log.d(TAG, String.valueOf(position));
+		position = arg2;
+		mIntent.putExtra("exactId", getTitleId(title));
 		startActivity(mIntent);
+	}
+
+	public int getTitleId(String title) {
+		ArrayList<String> sameTitles = new ArrayList<String>();
+
+		for (int i = 0; i < items.size(); i++) {
+			if (items.get(i).equals(title)) {
+				if (i == position) {
+					sameTitles.add("exactTitle");
+				} else {
+					sameTitles.add("title");
+				}
+			}
+		}
+		return sameTitles.indexOf("exactTitle");
 	}
 
 }

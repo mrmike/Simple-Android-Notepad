@@ -65,7 +65,7 @@ public class CreateNote extends Activity {
 			Log.d(TAG, "isEdit");
 			//getting the readable database
 			db = dbhelper.getReadableDatabase();
-			Cursor c = dbhelper.getNote(db, editTitle);
+			Cursor c = dbhelper.getNote(db, editTitle, 0);
 			//closing db connection
 			db.close();
 			//here we're set title and content of note to editText views

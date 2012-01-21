@@ -28,6 +28,7 @@ public class OneNote extends Activity {
 	
 	//default values for title and content variables
 	private String title = "defaultTitle";
+	private int exactId = 0;
 	private String content = "defaultContent";
 	private String date = "date";
 
@@ -51,12 +52,15 @@ public class OneNote extends Activity {
 		
 		//getting the note's title from title
 		title = mIntent.getStringExtra("title");
+		// getting the id of exact item in case having the same titles
+		exactId = mIntent.getIntExtra("exactId", 0);
+		
 		
 		//getting the readable database
 		db = dbhelper.getReadableDatabase();
 		
 		//getting the note from database
-		Cursor c = dbhelper.getNote(db, title);
+		Cursor c = dbhelper.getNote(db, title, exactId);
 		//closing the database connection
 		db.close();
 		
