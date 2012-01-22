@@ -33,6 +33,7 @@ public class CreateNote extends Activity {
 	
 	//variable will contain the title of editing note
 	private String editTitle;
+	private int id = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,8 @@ public class CreateNote extends Activity {
 		Intent mIntent = getIntent();
 		//if user is editting the note we bind the title of this note to editTitle variable
 		editTitle = mIntent.getStringExtra("title");
+		id = mIntent.getIntExtra("id", 0);
+		
 		//we're getting the isEdit value
 		//if user is editing note, the value if true
 		//otherwise the default value is false
@@ -65,7 +68,7 @@ public class CreateNote extends Activity {
 			Log.d(TAG, "isEdit");
 			//getting the readable database
 			db = dbhelper.getReadableDatabase();
-			Cursor c = dbhelper.getNote(db, editTitle, 0);
+			Cursor c = dbhelper.getNote(db, id);
 			//closing db connection
 			db.close();
 			//here we're set title and content of note to editText views

@@ -86,35 +86,25 @@ public class DBHelper extends SQLiteOpenHelper {
 		return c;
 	}
 	
-	public Cursor getNote(SQLiteDatabase db, String title, int exactId) {
-		Cursor temp = db.query(TABLE_NAME, new String[] {KEY_ID}, KEY_TITLE +" LIKE '"+ title +"'", null, null, null, null);
-		if (temp.moveToFirst()) {
-			for (int i = 0; i<exactId; i++) {
-				temp.moveToNext();
-			}
-		}
-		
-		int id = Integer.parseInt(temp.getString(0));
-		temp.close();
-		
+	public Cursor getNotes2(SQLiteDatabase db) {
+		//db.query is like normal sql query
+		//cursor contains all notes 
+		Cursor c = db.query(TABLE_NAME, new String[] {KEY_ID, KEY_TITLE}, null, null, null, null, "id DESC");
+		//moving to the first note
+		c.moveToFirst();
+		//and returning Cursor object
+		return c;
+	}
+	
+	public Cursor getNote(SQLiteDatabase db, int id) {		
 		Cursor c = db.query(TABLE_NAME, new String[] {KEY_TITLE, KEY_CONTENT, KEY_DATE}, KEY_ID +" LIKE '"+ id +"'", null, null, null, null);
 		c.moveToFirst();
 		return c;
 	}
 	
-	public void removeNote(String title, int exactTitleId) {
+	public void removeNote(int id) {
 		SQLiteDatabase db = getWritableDatabase();
-		
-		Cursor c = db.query(TABLE_NAME, new String[] {KEY_ID}, KEY_TITLE +" LIKE '"+ title +"'", null, null, null, null);
-		if (c.moveToFirst()) {
-			for (int i = 0; i<exactTitleId; i++) {
-				c.moveToNext();
-			}
-		}
-		
-		int id = Integer.parseInt(c.getString(0));
-		
-		db.delete(TABLE_NAME, KEY_ID+" like '"+ id + "'", null);
+		db.delete(TABLE_NAME, KEY_ID + " like '"+ id + "'", null);
 		db.close();
 	}
 	

@@ -44,7 +44,8 @@ public class Simple_NotepadActivity extends Activity implements
 	private DBHelper dbhelper;
 
 	// items contain notes titles
-	private ArrayList<String> items;
+	private ArrayList<String> titles;
+	private ArrayList<Item> items;
 
 	// variable will contain the position of clicked item in listview
 	private int position = 0;
@@ -84,13 +85,14 @@ public class Simple_NotepadActivity extends Activity implements
 	//
 	public void setNotes() {
 		// init the items arrayList
-		items = new ArrayList<String>();
+		titles = new ArrayList<String>();
+		items = new ArrayList<Item>();
 
 		// getting readable database
 		SQLiteDatabase db = dbhelper.getReadableDatabase();
 		// getting notes from db
 		// see dbhelper for more details
-		notes = dbhelper.getNotes(db);
+		notes = dbhelper.getNotes2(db);
 
 		// this should fix the problem
 		// now the activity will be managing the cursor lifecycle
@@ -104,13 +106,18 @@ public class Simple_NotepadActivity extends Activity implements
 		// populating ArrayList items with notes titles
 		if (notes.moveToFirst()) {
 			do {
-				items.add(notes.getString(0));
+				items.add(new Item(notes.getShort(0), notes.getString(1)));
 			} while (notes.moveToNext());
+		}
+		
+		
+		for (Item i : items) {
+			titles.add(i.getTitle());
 		}
 
 		// creating new adapter
 		adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, items);
+				android.R.layout.simple_list_item_1, titles);
 		noteList.setAdapter(adapter);
 		// setting listener to the listView
 		noteList.setOnItemClickListener(this);
@@ -148,36 +155,19 @@ public class Simple_NotepadActivity extends Activity implements
 		TextView tv = (TextView) noteList.getChildAt(position);
 		// getting the title of this textView
 		String title = tv.getText().toString();
-		int exactTitleId = 0;
-
-		ArrayList<String> sameTitles = new ArrayList<String>();
-
-		for (int i = 0; i < items.size(); i++) {
-			if (items.get(i).equals(title)) {
-				if (i == position) {
-					sameTitles.add("exactTitle");
-				} else {
-					sameTitles.add("title");
-				}
-			}
-		}
-		// variable exactTitleIt contains the exact id number of title in case when we're having few items with the same title
-		// so we need to know which item was clicked, eg. the first item with the same title, or the second and so on
-		exactTitleId = sameTitles.indexOf("exactTitle");
 
 		// performing one of actions, depending on user choice
 		switch (item.getItemId()) {
 
 		case R.id.showNote:
 			Intent mIntent = new Intent(this, OneNote.class);
-			mIntent.putExtra("title", title);
-			mIntent.putExtra("exactId", exactTitleId);
+			mIntent.putExtra("id", items.get(position).getId());
 			startActivity(mIntent);
 			break;
 
 		case R.id.editNote:
 			Intent i = new Intent(this, CreateNote.class);
-			i.putExtra("title", title);
+			i.putExtra("id", items.get(position).getId());
 			Log.d(TAG, title);
 			// this is important
 			// we send boolean to CreateNote activity
@@ -189,7 +179,7 @@ public class Simple_NotepadActivity extends Activity implements
 
 		case R.id.removeNote:
 			// removing this notes
-			dbhelper.removeNote(title, exactTitleId);
+			dbhelper.removeNote(items.get(position).getId());
 			// refreshing the listView
 			setNotes();
 			break;
@@ -208,25 +198,8 @@ public class Simple_NotepadActivity extends Activity implements
 		String title = tv.getText().toString();
 		Intent mIntent = new Intent(this, OneNote.class);
 		mIntent.putExtra("title", title);
-		Log.d(TAG, String.valueOf(position));
-		position = arg2;
-		mIntent.putExtra("exactId", getTitleId(title));
+		mIntent.putExtra("id", items.get(arg2).getId());
 		startActivity(mIntent);
 	}
-
-	public int getTitleId(String title) {
-		ArrayList<String> sameTitles = new ArrayList<String>();
-
-		for (int i = 0; i < items.size(); i++) {
-			if (items.get(i).equals(title)) {
-				if (i == position) {
-					sameTitles.add("exactTitle");
-				} else {
-					sameTitles.add("title");
-				}
-			}
-		}
-		return sameTitles.indexOf("exactTitle");
-	}
-
+	
 }
