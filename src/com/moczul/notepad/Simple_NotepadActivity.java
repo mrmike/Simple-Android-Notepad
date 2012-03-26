@@ -36,7 +36,7 @@ public class Simple_NotepadActivity extends Activity implements
 	private ListView noteList;
 	private Button addNoteBtn;
 
-	// adapter used to populate the listview
+	// adapter use to populate the listview
 	private ArrayAdapter<String> adapter;
 	// cursor will contain notes from database
 	private Cursor notes;

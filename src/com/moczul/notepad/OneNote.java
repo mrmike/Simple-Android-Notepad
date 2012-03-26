@@ -50,7 +50,6 @@ public class OneNote extends Activity {
 		// getting intent
 		Intent mIntent = getIntent();
 		
-		title = mIntent.getStringExtra("title");
 		id = mIntent.getIntExtra("id", 0);
 		
 		
@@ -64,6 +63,7 @@ public class OneNote extends Activity {
 		
 		//getting the content from cursor
 		//getString(1) because first column is noteTitle and second is noteContent and the third column is date
+		title = c.getString(0).toString();
 		content = c.getString(1).toString();
 		date = c.getString(2).toString();
 		
