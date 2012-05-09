@@ -97,14 +97,14 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 	
 	public Cursor getNote(SQLiteDatabase db, int id) {		
-		Cursor c = db.query(TABLE_NAME, new String[] {KEY_TITLE, KEY_CONTENT, KEY_DATE}, KEY_ID +" LIKE '"+ id +"'", null, null, null, null);
+		Cursor c = db.query(TABLE_NAME, new String[] {KEY_TITLE, KEY_CONTENT, KEY_DATE}, KEY_ID + " = ?", new String[] { String.valueOf(id) }, null, null, null);
 		c.moveToFirst();
 		return c;
 	}
 	
 	public void removeNote(int id) {
 		SQLiteDatabase db = getWritableDatabase();
-		db.delete(TABLE_NAME, KEY_ID + " like '"+ id + "'", null);
+		db.delete(TABLE_NAME, KEY_ID + " = ?", new String[] { String.valueOf(id) });
 		db.close();
 	}
 	
